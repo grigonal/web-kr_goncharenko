@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('courses') }}">Курсы</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Выйти</a> ({{ current_user.username }})</li>
+                <li><a href="{{ url_for('reminders', page=1) }}">Напоминания</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Войти</a></li>
+                <li><a href="{{ url_for('register') }}">Регистрация</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Основной контент -->
+    <div class="content">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Подвал -->
+    <footer>
+        <p>&copy; 2024 My Medication Tracker. All rights reserved.</p>
+    </footer>
+</body>
+</html>

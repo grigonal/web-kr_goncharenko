@@ -1,0 +1,29 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ book.title }}</h1>
+<img src="{{ url_for('static', filename='uploads/' + book.cover.file_name) }}" alt="Обложка книги" class="book-cover">
+<p><strong>Автор:</strong> {{ book.author }}</p>
+<p><strong>Издательство:</strong> {{ book.publisher }}</p>
+<p><strong>Год:</strong> {{ book.publication_year }}</p>
+<p><strong>Жанры:</strong> 
+    {% for genre in book.genres %}
+        {{ genre.name }}{% if not loop.last %}, {% endif %}
+    {% endfor %}
+</p>
+<p>{{ book.description | safe }}</p>
+
+<h2>Отзывы</h2>
+{% for review in book.reviews %}
+    <div class="review">
+        <p><strong>Оценка:</strong> {{ review.rating }}</p>
+        <p><strong>Пользователь:</strong> {{ review.user.first_name }} {{ review.user.last_name }}</p>
+        <p>{{ review.text | safe }}</p>
+    </div>
+{% endfor %}
+
+{% if current_user.is_authenticated and not book.reviews.filter_by(user_id=current_user.id).first() %}
+    <a href="{{ url_for('add_review', book_id=book.id) }}" class="btn">Оставить отзыв</a>
+{% endif %}
+{% endblock %}

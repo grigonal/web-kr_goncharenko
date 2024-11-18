@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}Add/Edit Book{% endblock %}
+{% block content %}
+    <h1>Добавить/Редактировать книгу</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.title.label }} {{ form.title }}
+        </div>
+        <div>
+            {{ form.description.label }} {{ form.description }}
+        </div>
+        <div>
+            {{ form.submit }}
+        </div>
+    </form>
+{% endblock %}
